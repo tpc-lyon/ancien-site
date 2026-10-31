@@ -77,6 +77,32 @@
     });
   }
 
+  // Formulaire « Nous contacter » : envoi vers le formulaire Google configuré en bas de contact.html
+  var cf = document.getElementById('contact-form');
+  if (cf && window.GOOGLE_FORM) {
+    var G = window.GOOGLE_FORM, st = document.getElementById('contact-statut'), bt = cf.querySelector('button[type="submit"]');
+    var pret = G.action.indexOf('A_REMPLACER') < 0;
+    cf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var champs = ['nom', 'email', 'objet', 'message'], manque = [];
+      champs.forEach(function (n) {
+        var el = cf.elements[n], vide = !el.value.trim() || (n === 'email' && !/^\S+@\S+\.\S+$/.test(el.value.trim()));
+        el.classList.toggle('invalide', vide);
+        if (vide) manque.push(el);
+      });
+      if (manque.length) { st.className = 'statut ko'; st.textContent = 'Merci de compléter les champs indiqués en rouge.'; manque[0].focus(); return; }
+      if (cf.elements.site.value) return;              // robot : on ne fait rien
+      if (!pret) { st.className = 'statut ko'; st.textContent = 'Le formulaire n’est pas encore relié. Appelez le standard du lycée en attendant.'; return; }
+      var data = new URLSearchParams();
+      ['nom', 'email', 'lycee', 'objet', 'message'].forEach(function (n) { data.append(G[n], cf.elements[n].value.trim()); });
+      bt.disabled = true; st.className = 'statut'; st.textContent = 'Envoi…';
+      fetch(G.action, { method: 'POST', mode: 'no-cors', body: data })
+        .then(function () { st.className = 'statut ok'; st.textContent = '✓ Message envoyé. Nous vous répondrons rapidement à ' + cf.elements.email.value.trim() + '.'; cf.reset(); })
+        .catch(function () { st.className = 'statut ko'; st.textContent = 'Échec de l’envoi : vérifiez votre connexion et réessayez.'; })
+        .then(function () { bt.disabled = false; });
+    });
+  }
+
   // Écoles (page Après la prépa) : filtre par domaine
   var tb = document.getElementById('ecoles-corps');
   if (tb && window.ECOLES) {
