@@ -122,7 +122,7 @@ p { margin: 0 0 1em; }
 
 .spectre { margin-top: clamp(48px, 7vw, 84px); }
 .spectre .bande { position: relative; height: 92px; background: #0B1428; border-top: 1px solid #2A3A60; border-bottom: 1px solid #2A3A60; }
-.spectre .bande i { position: absolute; top: 0; bottom: 0; width: 4px; box-shadow: 0 0 14px 3px currentColor, 0 0 40px 6px currentColor; }
+.spectre .bande i { position: absolute; top: 0; bottom: 0; width: 8px; margin-left: -4px; box-shadow: 0 0 14px 3px currentColor, 0 0 40px 6px currentColor; }
 .spectre .axe { position: relative; height: 34px; font-size: 0.78rem; color: #8A99B4; }
 .spectre .axe span { position: absolute; top: 6px; transform: translateX(-50%); white-space: nowrap; }
 .spectre .axe span::before { content: ''; position: absolute; left: 50%; top: -6px; height: 5px; border-left: 1px solid #5B6B8A; }
@@ -297,3 +297,45 @@ p { margin: 0 0 1em; }
 .site-footer li { margin-bottom: 4px; }
 .site-footer .bas { margin-top: 32px; padding-top: 16px; border-top: 1px solid #2E3F63; font-size: 0.85rem; color: #8F9CB3; }
 @media (max-width: 760px) { .site-footer .cols { grid-template-columns: 1fr; } }
+
+/* ---------------- Accueil chaleureux ---------------- */
+.hero-grille { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.hero-grille h1 { max-width: 13ch; }
+.photo.groupe { aspect-ratio: 4 / 3; border-radius: 10px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35); }
+.photo.groupe.manque { border-color: #5B6B8A; }
+@media (max-width: 860px) {
+  .hero-grille { grid-template-columns: 1fr; }
+  .hero-grille .photo.groupe { order: -1; }
+}
+.spectre.fin { margin-top: clamp(40px, 6vw, 72px); }
+.spectre.fin .bande { height: 44px; }
+.spectre.fin figcaption { padding-top: 12px; max-width: 80ch; }
+
+.duo.haut { align-items: start; }
+.humain { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; }
+.humain li { font-size: 1.08rem; padding-left: 18px; border-left: 3px solid var(--accent); }
+.humain b { font-size: 1.35rem; font-weight: 800; margin-right: 4px; }
+
+.vie { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.vie .photo { aspect-ratio: 3 / 4; }
+@media (max-width: 860px) { .vie { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.equipe { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 32px 24px; }
+.membre { margin: 0; text-align: center; }
+.membre .visage { width: 132px; height: 132px; border-radius: 50%; margin: 0 auto 14px; overflow: hidden; background: var(--fond-2);
+  display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; color: var(--accent);
+  font-stretch: 125%; font-variation-settings: 'wdth' 125; box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--trait); }
+.membre .visage img { width: 100%; height: 100%; object-fit: cover; }
+.membre b { display: block; font-size: 1.05rem; }
+.membre span { display: block; color: var(--gris); font-size: 0.95rem; }
+.membre q { display: block; margin-top: 8px; font-size: 0.95rem; color: var(--encre); }
+
+/* ---------------- Logo du lycée ---------------- */
+.marque { flex-direction: row; align-items: center; gap: 14px; }
+.marque .logo { height: 44px; width: auto; }
+.marque-texte { display: flex; flex-direction: column; padding-left: 14px; border-left: 1px solid var(--trait); }
+.logo-pied { height: 56px; width: auto; margin-bottom: 16px; opacity: 0.92; }
+@media (max-width: 480px) { .marque .logo { height: 34px; } .marque-texte span { display: none; } }
+.photo.groupe { aspect-ratio: 1 / 1; max-width: 420px; justify-self: end; width: 100%; }
+.photo.promo { margin-bottom: 14px; }
+@media (max-width: 860px) { .photo.groupe { aspect-ratio: 4 / 3; max-width: none; justify-self: stretch; } }

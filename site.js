@@ -63,6 +63,20 @@
     }).join('');
   }
 
+  // L'équipe (page d'accueil) : photo ronde, ou initiales si la photo n'existe pas encore
+  var ebox = document.getElementById('equipe');
+  if (ebox && window.EQUIPE) {
+    ebox.innerHTML = window.EQUIPE.map(function (m) {
+      var init = m.nom.split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 2).toUpperCase();
+      return '<figure class="membre"><div class="visage" data-init="' + esc(init) + '">' +
+        (m.photo ? '<img src="' + esc(m.photo) + '" alt="">' : esc(init)) + '</div>' +
+        '<figcaption><b>' + esc(m.nom) + '</b><span>' + esc(m.matiere) + '</span>' + (m.mot ? '<q>' + esc(m.mot) + '</q>' : '') + '</figcaption></figure>';
+    }).join('');
+    ebox.querySelectorAll('.visage img').forEach(function (img) {
+      img.addEventListener('error', function () { var v = img.parentNode; v.textContent = v.getAttribute('data-init'); });
+    });
+  }
+
   // Écoles (page Après la prépa) : filtre par domaine
   var tb = document.getElementById('ecoles-corps');
   if (tb && window.ECOLES) {
