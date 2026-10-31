@@ -367,3 +367,13 @@ body.p-contact .page-tete::after { display: none; }
 .contact-infos { border-top: 2px solid var(--encre); padding-top: 16px; }
 .contact-infos h3 { margin-top: 0.4em; }
 .contact-infos p { color: var(--gris); }
+
+/* ---------------- Page La vie en TPC : sorties ---------------- */
+.sorties { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 20px; }
+@media (max-width: 960px) { .sorties { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .sorties { grid-template-columns: 1fr; } }
+.sortie { margin: 0; }
+.sortie-texte { padding-top: 12px; }
+.sortie .date { display: block; font-size: 0.85rem; font-weight: 650; letter-spacing: 0.02em; color: var(--accent); }
+.sortie h3 { margin: 2px 0 4px; font-size: 1.1rem; }
+.sortie p { margin: 0; color: var(--gris); font-size: 0.95rem; }

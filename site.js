@@ -12,6 +12,17 @@
     });
   }
 
+  // Sorties (page La vie en TPC) : construites avant le chargement des photos ci-dessous
+  var sbox = document.getElementById('sorties');
+  if (sbox && window.SORTIES) {
+    var e2 = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    sbox.innerHTML = window.SORTIES.map(function (s) {
+      return '<article class="sortie"><figure class="photo" data-src="' + e2(s.photo) + '" data-alt="' + e2(s.titre) + '"></figure>' +
+        '<div class="sortie-texte">' + (s.date ? '<span class="date">' + e2(s.date) + '</span>' : '') +
+        '<h3>' + e2(s.titre) + '</h3>' + (s.legende ? '<p>' + e2(s.legende) + '</p>' : '') + '</div></article>';
+    }).join('');
+  }
+
   // Photos : on charge img/xxx.jpg ; si le fichier n'existe pas encore, un emplacement indique quoi fournir.
   document.querySelectorAll('figure.photo[data-src]').forEach(function (fig) {
     var img = new Image();
