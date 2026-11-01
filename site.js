@@ -114,6 +114,42 @@
     });
   }
 
+  // Camembert des volumes horaires (page La prépa)
+  var cam = document.getElementById('camembert'), leg = document.getElementById('horaires-legende');
+  if (cam && leg && window.HORAIRES) {
+    var H = window.HORAIRES, tot = H.reduce(function (a, m) { return a + m.heures; }, 0);
+    var R = 100, r = 58, a0 = -Math.PI / 2, ns = 'http://www.w3.org/2000/svg';
+    var pct = function (h) { return Math.round(100 * h / tot) + ' %'; };
+    var fmt = function (h) { return String(h).replace('.', ',') + ' h'; };
+    var pt = function (rad, a) { return (rad * Math.cos(a)).toFixed(2) + ' ' + (rad * Math.sin(a)).toFixed(2); };
+    var svg = '<svg viewBox="-104 -104 208 208" role="img" aria-label="Répartition des ' + fmt(tot) + ' hebdomadaires par matière">';
+    H.forEach(function (m, i) {
+      var a1 = a0 + 2 * Math.PI * m.heures / tot, big = (a1 - a0) > Math.PI ? 1 : 0;
+      svg += '<path class="part c' + (i % 8) + '" data-i="' + i + '" d="M ' + pt(R, a0) + ' A ' + R + ' ' + R + ' 0 ' + big + ' 1 ' + pt(R, a1) +
+        ' L ' + pt(r, a1) + ' A ' + r + ' ' + r + ' 0 ' + big + ' 0 ' + pt(r, a0) + ' Z"><title>' + esc(m.matiere) + ' : ' + fmt(m.heures) + '</title></path>';
+      a0 = a1;
+    });
+    svg += '<text class="centre-val" y="2" text-anchor="middle">' + fmt(tot) + '</text><text class="centre-lib" y="22" text-anchor="middle">par semaine</text></svg>';
+    cam.innerHTML = svg;
+    leg.innerHTML = H.map(function (m, i) {
+      return '<li tabindex="0" data-i="' + i + '"><i class="c' + (i % 8) + '"></i><span>' + esc(m.matiere) + '</span><b>' + fmt(m.heures) + '</b><em>' + pct(m.heures) + '</em></li>';
+    }).join('');
+    var val = cam.querySelector('.centre-val'), lib = cam.querySelector('.centre-lib');
+    var montre = function (i) {
+      cam.classList.toggle('survol', i !== null);
+      cam.querySelectorAll('.part').forEach(function (p) { p.classList.toggle('on', +p.getAttribute('data-i') === i); });
+      leg.querySelectorAll('li').forEach(function (l) { l.classList.toggle('on', +l.getAttribute('data-i') === i); });
+      if (i === null) { val.textContent = fmt(tot); lib.textContent = 'par semaine'; }
+      else { val.textContent = fmt(H[i].heures); lib.textContent = H[i].matiere + ' · ' + pct(H[i].heures); }
+    };
+    [cam, leg].forEach(function (box) {
+      box.addEventListener('mouseover', function (e) { var t = e.target.closest('[data-i]'); if (t) montre(+t.getAttribute('data-i')); });
+      box.addEventListener('mouseleave', function () { montre(null); });
+    });
+    leg.addEventListener('focusin', function (e) { var t = e.target.closest('[data-i]'); if (t) montre(+t.getAttribute('data-i')); });
+    leg.addEventListener('focusout', function () { montre(null); });
+  }
+
   // Écoles (page Après la prépa) : filtre par domaine
   var tb = document.getElementById('ecoles-corps');
   if (tb && window.ECOLES) {
